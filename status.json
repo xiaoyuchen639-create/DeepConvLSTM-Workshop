@@ -1,0 +1,21 @@
+{
+  "completed": [
+    "reference",
+    "A_cnn",
+    "A_gru",
+    "B_conv0",
+    "B_conv1",
+    "B_conv2",
+    "C_w20",
+    "C_w42",
+    "C_w60",
+    "D_control",
+    "D_no_dropout",
+    "D_no_weight_decay",
+    "D_no_augmentation",
+    "E_warmup",
+    "F_focal"
+  ],
+  "pending": [],
+  "complete": true
+}
