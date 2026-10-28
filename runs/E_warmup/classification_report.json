@@ -1,0 +1,123 @@
+{
+  "Null": {
+    "precision": 0.9457439112611526,
+    "recall": 0.9525197328476017,
+    "f1-score": 0.9491197289612197,
+    "support": 8235.0
+  },
+  "Open Door 1": {
+    "precision": 0.6724137931034483,
+    "recall": 0.6724137931034483,
+    "f1-score": 0.6724137931034483,
+    "support": 58.0
+  },
+  "Open Door 2": {
+    "precision": 0.8620689655172413,
+    "recall": 0.8064516129032258,
+    "f1-score": 0.8333333333333334,
+    "support": 93.0
+  },
+  "Close Door 1": {
+    "precision": 0.5866666666666667,
+    "recall": 0.7333333333333333,
+    "f1-score": 0.6518518518518519,
+    "support": 60.0
+  },
+  "Close Door 2": {
+    "precision": 0.7087378640776699,
+    "recall": 0.8902439024390244,
+    "f1-score": 0.7891891891891892,
+    "support": 82.0
+  },
+  "Open Fridge": {
+    "precision": 0.782608695652174,
+    "recall": 0.5478260869565217,
+    "f1-score": 0.6445012787723785,
+    "support": 230.0
+  },
+  "Close Fridge": {
+    "precision": 0.7575757575757576,
+    "recall": 0.7961783439490446,
+    "f1-score": 0.7763975155279503,
+    "support": 157.0
+  },
+  "Open Dishwasher": {
+    "precision": 0.5851063829787234,
+    "recall": 0.55,
+    "f1-score": 0.5670103092783505,
+    "support": 100.0
+  },
+  "Close Dishwasher": {
+    "precision": 0.45,
+    "recall": 0.5769230769230769,
+    "f1-score": 0.5056179775280899,
+    "support": 78.0
+  },
+  "Open Drawer 1": {
+    "precision": 0.4,
+    "recall": 0.5128205128205128,
+    "f1-score": 0.449438202247191,
+    "support": 39.0
+  },
+  "Close Drawer 1": {
+    "precision": 0.44680851063829785,
+    "recall": 0.5,
+    "f1-score": 0.47191011235955055,
+    "support": 42.0
+  },
+  "Open Drawer 2": {
+    "precision": 0.5333333333333333,
+    "recall": 0.2,
+    "f1-score": 0.2909090909090909,
+    "support": 40.0
+  },
+  "Close Drawer 2": {
+    "precision": 0.2916666666666667,
+    "recall": 0.25925925925925924,
+    "f1-score": 0.27450980392156865,
+    "support": 27.0
+  },
+  "Open Drawer 3": {
+    "precision": 0.581081081081081,
+    "recall": 0.6615384615384615,
+    "f1-score": 0.6187050359712231,
+    "support": 65.0
+  },
+  "Close Drawer 3": {
+    "precision": 0.45652173913043476,
+    "recall": 0.7,
+    "f1-score": 0.5526315789473685,
+    "support": 60.0
+  },
+  "Clean Table": {
+    "precision": 0.625,
+    "recall": 0.5555555555555556,
+    "f1-score": 0.5882352941176471,
+    "support": 99.0
+  },
+  "Drink from Cup": {
+    "precision": 0.6622516556291391,
+    "recall": 0.6289308176100629,
+    "f1-score": 0.6451612903225806,
+    "support": 318.0
+  },
+  "Toggle Switch": {
+    "precision": 0.7377049180327869,
+    "recall": 0.4205607476635514,
+    "f1-score": 0.5357142857142857,
+    "support": 107.0
+  },
+  "accuracy": 0.8965621840242669,
+  "macro avg": {
+    "precision": 0.6158494411858096,
+    "recall": 0.6091419576057046,
+    "f1-score": 0.6009249817809066,
+    "support": 9890.0
+  },
+  "weighted avg": {
+    "precision": 0.8972074194376283,
+    "recall": 0.8965621840242669,
+    "f1-score": 0.8951549755193575,
+    "support": 9890.0
+  }
+}
