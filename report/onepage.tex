@@ -1,0 +1,76 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=14mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,booktabs,array}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage[font=small,labelfont=bf,skip=3pt]{caption}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{document}
+\begin{center}
+{\Large\bfseries DeepConvLSTM: A Controlled Ablation Study}\\[3pt]
+{\small ELEC 872 -- Workshop 2 \quad | \quad 15 runs, 30 epochs per run, seed 42}
+\end{center}
+\vspace{-5pt}
+\textbf{Protocol.}
+We independently reconstruct DeepConvLSTM [1] from the workshop PDF, which supplied no source code, and check the authors' 113-channel selection. OPPORTUNITY [2] has 17 gestures plus Null at 30 Hz. Training uses S1-Drill/ADL1--5 and S2/S3-Drill/ADL1--2; validation uses S2/S3-ADL3; test uses S2/S3-ADL4--5. Windows never cross recordings. Missing values are interpolated within recordings; leading/all-missing values become zero. Train-only channel min/max normalizes signals to $[0,1]$, with clipping.
+
+The reference has four 64-filter temporal convolutions (kernel 5), two 128-unit LSTMs, dropout 0.5, a 24-sample window, stride 12 and final-sample labels. All runs use RMSProp (learning rate 0.001, smoothing 0.9), batch 100 and gradient clipping at 5. We evaluate the checkpoint maximizing validation weighted F1 on test. Null is retained (83.3\% of reference test windows); macro F1 averages all 18 classes. $\Delta M$ denotes macro-F1 change in percentage points (pp).
+
+\begin{table}[h!]
+\centering\small
+\caption{Part 0 and A--C: actual test scores; deltas relative to reference.}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llrrrr@{}}
+\toprule
+Part & Configuration & Weighted F1 & Macro F1 & $\Delta M$ (pp) & Params (M)\\
+\midrule
+0 & Reference: 4 conv + 2 LSTM, 24 samples & 0.8792 & 0.5576 & 0.00 & 3.97\\
+A & CNN: two 128-unit dense layers & 0.8810 & 0.5150 & $-4.26$ & 7.49\\
+A & GRU: replace both LSTMs & 0.8906 & 0.5875 & $+2.99$ & 2.99\\
+B & 0 convolutional layers & 0.8003 & 0.2206 & $-33.70$ & 0.26\\
+B & 1 convolutional layer & 0.8875 & 0.5930 & $+3.54$ & 3.90\\
+B & 2 convolutional layers & 0.8879 & 0.5885 & $+3.09$ & 3.92\\
+C & 20 samples (0.67 s) & \textbf{0.8960} & \textbf{0.6076} & $+5.00$ & 3.97\\
+C & 42 samples (1.40 s) & 0.8835 & 0.5596 & $+0.20$ & 3.97\\
+C & 60 samples (2.00 s) & 0.8912 & 0.5849 & $+2.73$ & 3.97\\
+\bottomrule
+\end{tabular*}
+\end{table}
+\vspace{-9pt}
+\begin{table}[h!]
+\centering\small
+\caption{Parts D--F: actual test scores; D uses its own control, E/F use reference.}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llrrrl@{}}
+\toprule
+Part & Configuration & Weighted F1 & Macro F1 & $\Delta M$ (pp) & Control\\
+\midrule
+D & D-control: dropout + decay + jitter & 0.8880 & 0.5491 & 0.00 & D-control\\
+D & Remove dropout only & 0.8836 & 0.5452 & $-0.39$ & D-control\\
+D & Remove weight decay only & 0.8875 & 0.5518 & $+0.27$ & D-control\\
+D & Remove augmentation only & 0.8879 & 0.5602 & $+1.11$ & D-control\\
+E & Linear learning-rate warm-up, 5 epochs & 0.8952 & 0.6009 & $+4.33$ & Reference\\
+F & Focal loss, $\gamma=2$, no class weights & 0.8862 & 0.5547 & $-0.29$ & Reference\\
+\bottomrule
+\end{tabular*}
+\end{table}
+\vspace{-9pt}
+\textbf{D control.}
+The paper-style reference already disables weight decay and augmentation. D therefore uses a separate control: dropout 0.5, weight decay $10^{-4}$ and Gaussian training jitter $\sigma=0.01$, clipped to $[0,1]$. Each D variant removes one measure; validation/test are never augmented. This extra control and the optional zero-conv/42-sample configurations produce 15 runs.
+
+\textbf{Findings.}
+\textit{A--C:} CNN slightly improves weighted F1 but reduces macro F1; GRU improves both with fewer parameters. Zero convolutions sharply hurts macro F1, while one/two layers outperform four. The 20-sample window ranks highest on both F1 metrics, so longer context is not consistently better. Conv depth also changes sequence length and input dimension: this is not a parameter-matched comparison.
+\textit{D--F:} Removing dropout slightly hurts D-control; removing jitter improves macro F1 by 1.11 pp. Warm-up improves macro F1 by 4.33 pp, but does \emph{not} improve the measured early stability indicators: mean absolute consecutive validation-CE change in epochs 1--10 rises from 0.0305 to 0.0390, and mean pre-clipping gradient norm from 1.753 to 2.109. Focal loss [3], $-(1-p_y)^2\log p_y$, improves weighted F1 but lowers macro F1; mean F1 of the 12 gestures with fewer than 100 test windows falls from 0.5189 to 0.5061.
+
+\textbf{Conclusion and limits.}
+Convolutions help, but greater depth, longer windows and focal loss do not guarantee gains. The short window and warm-up are promising under this protocol. One seed and a fixed budget cannot establish significance or convergence. This recording-held-out split does not test unseen participants; window changes also slightly alter test endpoints/counts. Full configurations, logs and per-class scores are retained locally.
+
+{\footnotesize
+\textbf{Sources:} [1] Ord\'o\~nez \& Roggen, \emph{Sensors} 16(1):115, 2016, \href{https://doi.org/10.3390/s16010115}{doi:10.3390/s16010115}; \href{https://github.com/STRCWearlab/DeepConvLSTM}{authors' code}.
+[2] Roggen et al., \href{https://doi.org/10.24432/C5M027}{OPPORTUNITY, UCI} (CC BY 4.0).
+[3] Lin et al., \emph{ICCV}, 2017, \href{https://doi.org/10.1109/ICCV.2017.324}{Focal Loss}.
+\textbf{Repository:} \url{https://github.com/xiaoyuchen639-create/DeepConvLSTM-Workshop}.
+}
+\end{document}
