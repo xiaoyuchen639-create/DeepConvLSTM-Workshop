@@ -1,0 +1,13 @@
+{
+  "accuracy": 0.8883720930232558,
+  "weighted_f1": 0.8880123568744652,
+  "macro_f1": 0.5490880117271313,
+  "gesture_macro_f1": 0.5256079117214153,
+  "ce_loss": 0.38881024186121804,
+  "best_epoch": 18,
+  "best_val_weighted_f1": 0.8792509098036129,
+  "training_seconds": 438.1391598,
+  "test_windows": 9890,
+  "parameters": 3965778,
+  "seed": 42
+}
